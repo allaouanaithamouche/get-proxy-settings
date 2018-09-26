@@ -44,8 +44,8 @@ export async function getProxyWindows(): Promise<ProxySettings> {
     const values = await openKey(Hive.HKCU, "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings");
     const proxy = values["ProxyServer"];
     const enable = values["ProxyEnable"];
-    const enableValue = Number(enable && enable.value);
-    if (enableValue > 0 && proxy) {
+    const isEnabled = enable && (enable.value === true || Number(enable.value) !== 0);
+    if (isEnabled && proxy) {
         return parseWindowsProxySetting(proxy.value);
     } else {
         return null;
